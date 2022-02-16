@@ -3,20 +3,20 @@
 
   let data = [];
 
-  const mailRe =
-	/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const mailRe = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   store.init = (cards) => {
     data = cards.map((card, id) => ({
       id,
       card,
       answers: [],
-      progressValue: 0,
+      progressValue: 0
     }));
   };
 
   store.dataUpdate = (id, value, field = null) => {
-    const item = data.find(item => item.id === id);
+    // store.dataUpdate = (id, value, isEmail = false) => {
+    const item = data.find((item) => item.id === id);
 
     if (id === 1) {
       item.answers.splice(0);
@@ -33,17 +33,13 @@
       }
     } else if (id === 4) {
       if (!item.answers.length) {
-        item.answers.push(
-          {name: ''},
-          {surname: ''},
-          {email: ''}
-        );
+        item.answers.push({ name: "" }, { surname: "" }, { email: "" });
       }
 
       for (const elem of item.answers) {
         if (elem.hasOwnProperty(field)) {
-          if (field === 'email') {
-            elem[field] = mailRe.test(value) ? value : '';
+          if (field === "email") {
+            elem[field] = mailRe.test(value) ? value : "";
           } else {
             elem[field] = value;
           }
@@ -64,9 +60,10 @@
   };
 
   store.getProgressPercent = () => {
-    const sumProgressValues = data.map(item => item.progressValue)
-                                  .reduce((a, b) => a + b);
-    const progressPercent = sumProgressValues / 6 * 100;
+    const sumProgressValues = data
+      .map((item) => item.progressValue)
+      .reduce((a, b) => a + b);
+    const progressPercent = (sumProgressValues / 6) * 100;
 
     return progressPercent;
   };
@@ -76,11 +73,9 @@
     return email;
   };
 
-
   window.store = store;
 
   function getCopy(x) {
     return JSON.parse(JSON.stringify(x));
   }
-  
 })();
